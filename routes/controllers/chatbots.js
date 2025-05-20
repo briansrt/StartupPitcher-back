@@ -110,6 +110,39 @@ Pitch mejorado:
   }
 };
 
+const demoChatbot = async (req, res) => {
+  const datos = req.body;
+
+  const prompt = `
+    Eres un asistente virtual especializado en ayudar a emprendedores. Responde a las preguntas de manera clara y concisa, proporcionando información útil y relevante. Si no puedes ayudar, indica que no tienes la información.
+
+    Pregunta: ${datos.message}
+  `;
+
+  try {
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [
+        {
+          role: "system",
+          content: "Eres un asistente virtual especializado en ayudar a emprendedores. Responde a las preguntas de manera clara y concisa, proporcionando información útil y relevante. Si no puedes ayudar, indica que no tienes la información.",
+        },
+        {
+          role: "user",
+          content: prompt,
+        },
+      ],
+      temperature: 0.7,
+    });
+
+    const respuesta = response.choices[0].message.content.trim();
+    res.status(200).json({ reply: respuesta }); // 👈 Clave correcta
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error al procesar la solicitud" });
+  }
+};
+
 const guardarPitch = async (req, res) => {
   const client = await getClient();
   const { ideaId, pitch } = req.body;
@@ -126,4 +159,4 @@ const guardarPitch = async (req, res) => {
   }
 };
 
-module.exports = {solicitarFeedback, mejorarPitch, guardarPitch};
+module.exports = {solicitarFeedback, demoChatbot, mejorarPitch, guardarPitch};
