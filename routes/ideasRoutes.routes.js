@@ -9,6 +9,7 @@ router.get('/estadisticas/:userId', estadisticas);
 router.get('/ideasPublicas', ideasPublicas);
 router.delete('/eliminarIdea/:ideaId', eliminarIdea);
 router.put('/publicarIdea', actualizarIdea);
+console.log('📥 Ruta /editarIdea/:id registrada');
 router.put('/editarIdea/:id', editarIdea);
 
 

@@ -146,23 +146,26 @@ const editarIdea = async (req, res) => {
 
   try {
     const client = await getClient();
-    const result = await client
-      .db("StartupPitcher")
-      .collection("ideas")
-      .findOneAndUpdate(
-        { _id: new ObjectId(id) },
-        { $set: { titulo, descripcion, pitch } },
-        { returnDocument: "after" }
-      );
+    const db = client.db("StartupPitcher");
+    const collection = db.collection("ideas");
 
-    if (result.value) {
-      return res.status(200).json(result.value); // ✅ JSON válido
-    } else {
+    // Primero actualizamos la idea
+    const updateResult = await collection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: { titulo, descripcion, pitch } }
+    );
+
+    if (updateResult.matchedCount === 0) {
       return res.status(404).json({ message: "Idea no encontrada" });
     }
+
+    // Luego recuperamos la idea actualizada
+    const updatedIdea = await collection.findOne({ _id: new ObjectId(id) });
+
+    return res.status(200).json(updatedIdea);
   } catch (err) {
     console.error("Error actualizando idea:", err);
-    res.status(500).json({ message: "Error del servidor" });
+    return res.status(500).json({ message: "Error del servidor" });
   }
 };
 
