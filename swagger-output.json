@@ -1,0 +1,656 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "API StartupPitcher",
+    "description": "Documentación de la API para la gestión de startups y pitches.",
+    "version": "1.0.0"
+  },
+  "host": "startup-pitcher-back.vercel.app",
+  "basePath": "/",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/crearIdeas": {
+      "post": {
+        "tags": [
+          "Ideas"
+        ],
+        "description": "Crea una nueva idea y la guarda en la base de datos.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "userId": {
+                  "type": "string",
+                  "example": "user_123"
+                },
+                "username": {
+                  "type": "string",
+                  "example": "Juan"
+                },
+                "titulo": {
+                  "type": "string",
+                  "example": "Nueva app"
+                },
+                "descripcion": {
+                  "type": "string",
+                  "example": "Descripción de la idea"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Idea creada correctamente",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "Idea creada"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/misIdeas/{userId}": {
+      "get": {
+        "tags": [
+          "Ideas"
+        ],
+        "description": "Obtiene todas las ideas de un usuario específico.",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID del usuario"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de ideas del usuario",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "example": "id_idea"
+                  },
+                  "titulo": {
+                    "type": "string",
+                    "example": "Idea 1"
+                  },
+                  "descripcion": {
+                    "type": "string",
+                    "example": "Desc"
+                  },
+                  "estado": {
+                    "type": "string",
+                    "example": "privado"
+                  },
+                  "fecha": {
+                    "type": "string",
+                    "example": "2025-01-01"
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/getIdeaId/{id}": {
+      "get": {
+        "tags": [
+          "Ideas"
+        ],
+        "description": "Obtiene una idea específica por su ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID de la idea"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Idea encontrada",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "example": "id_idea"
+                },
+                "titulo": {
+                  "type": "string",
+                  "example": "Idea 1"
+                },
+                "descripcion": {
+                  "type": "string",
+                  "example": "Desc"
+                },
+                "estado": {
+                  "type": "string",
+                  "example": "privado"
+                },
+                "fecha": {
+                  "type": "string",
+                  "example": "2025-01-01"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/estadisticas/{userId}": {
+      "get": {
+        "tags": [
+          "Ideas"
+        ],
+        "description": "Obtiene estadísticas de las ideas de un usuario.",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID del usuario"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Estadísticas de ideas",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "total": {
+                  "type": "number",
+                  "example": 5
+                },
+                "conFeedback": {
+                  "type": "number",
+                  "example": 2
+                },
+                "sinFeedback": {
+                  "type": "number",
+                  "example": 3
+                },
+                "conPitch": {
+                  "type": "number",
+                  "example": 1
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/ideasPublicas": {
+      "get": {
+        "tags": [
+          "Ideas"
+        ],
+        "description": "Obtiene todas las ideas públicas.",
+        "responses": {
+          "200": {
+            "description": "Lista de ideas públicas",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "example": "id_idea"
+                  },
+                  "userId": {
+                    "type": "string",
+                    "example": "user_123"
+                  },
+                  "username": {
+                    "type": "string",
+                    "example": "Juan"
+                  },
+                  "titulo": {
+                    "type": "string",
+                    "example": "Idea pública"
+                  },
+                  "descripcion": {
+                    "type": "string",
+                    "example": "Desc"
+                  },
+                  "fecha": {
+                    "type": "string",
+                    "example": "2025-01-01"
+                  },
+                  "aiFeedback": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "pitch": {
+                    "type": "boolean",
+                    "example": true
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/eliminarIdea/{ideaId}": {
+      "delete": {
+        "tags": [
+          "Ideas"
+        ],
+        "description": "Elimina una idea por su ID.",
+        "parameters": [
+          {
+            "name": "ideaId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID de la idea a eliminar"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Idea eliminada correctamente",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "Idea eliminada"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/publicarIdea": {
+      "put": {
+        "tags": [
+          "Ideas"
+        ],
+        "description": "Actualiza el estado de una idea (por ejemplo, de privado a público).",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ideaId": {
+                  "type": "string",
+                  "example": "id_idea"
+                },
+                "nuevoEstado": {
+                  "type": "string",
+                  "example": "publico"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Idea actualizada correctamente",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "Idea actualizada"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/editarIdea/{id}": {
+      "put": {
+        "tags": [
+          "Ideas"
+        ],
+        "description": "Edita el contenido de una idea existente.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID de la idea a editar"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "titulo": {
+                  "type": "string",
+                  "example": "Nuevo título"
+                },
+                "descripcion": {
+                  "type": "string",
+                  "example": "Nueva descripción"
+                },
+                "pitch": {
+                  "type": "string",
+                  "example": "Nuevo pitch"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Idea editada correctamente",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "example": "id_idea"
+                },
+                "titulo": {
+                  "type": "string",
+                  "example": "Nuevo título"
+                },
+                "descripcion": {
+                  "type": "string",
+                  "example": "Nueva descripción"
+                },
+                "pitch": {
+                  "type": "string",
+                  "example": "Nuevo pitch"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/chatbot/FeedbackIdeas": {
+      "post": {
+        "tags": [
+          "Chatbot"
+        ],
+        "description": "Solicita feedback generado por IA sobre una idea específica.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ideaId": {
+                  "type": "string",
+                  "example": "id_idea"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Feedback generado correctamente",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "feedback": {
+                  "type": "string",
+                  "example": "✅ Fortalezas: ... ⚠️ Áreas de mejora: ... 💡 Ideas adicionales: ..."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/chatbot/mejorarPitch": {
+      "post": {
+        "tags": [
+          "Chatbot"
+        ],
+        "description": "Mejora un pitch existente usando IA para hacerlo más claro, persuasivo y profesional.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "descripcion": {
+                  "type": "string",
+                  "example": "Descripción de la idea"
+                },
+                "pitch": {
+                  "type": "string",
+                  "example": "Pitch original"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pitch mejorado",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "pitchMejorado": {
+                  "type": "string",
+                  "example": "Pitch optimizado por IA"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/chatbot/demoChatbot": {
+      "post": {
+        "tags": [
+          "Chatbot"
+        ],
+        "description": "Envía un mensaje de prueba al chatbot de soporte a emprendedores.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "¿Cómo puedo mejorar mi idea de negocio?"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Respuesta generada por el chatbot",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "reply": {
+                  "type": "string",
+                  "example": "Aquí está el consejo de IA sobre tu idea..."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/chatbot/guardarPitch": {
+      "put": {
+        "tags": [
+          "Chatbot"
+        ],
+        "description": "Guarda o actualiza el pitch de una idea específica en la base de datos.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ideaId": {
+                  "type": "string",
+                  "example": "id_idea"
+                },
+                "pitch": {
+                  "type": "string",
+                  "example": "Nuevo pitch"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pitch guardado correctamente",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Pitch guardado correctamente"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  }
+}
